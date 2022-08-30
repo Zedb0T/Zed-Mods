@@ -14,6 +14,7 @@
   (set! (-> *autosplit-info-jak1* num-power-cells) (the int (-> *game-info* fuel)))
   (set! (-> *autosplit-info-jak1* num-orbs) (the int (-> *game-info* money-total)))
   (set! (-> *autosplit-info-jak1* num-scout-flies) (the int (-> *game-info* buzzer-total)))
+ 
 
   ;; loading/cutscene related flags
   (set! (-> *autosplit-info-jak1* in-cutscene?) (-> *pc-settings* movie?))
@@ -131,6 +132,12 @@
   (set! (-> *autosplit-info-jak1* unk-finalboss-movies) (if (task-closed? (game-task finalboss-movies) (task-status unknown)) 1 0))
   (set! (-> *autosplit-info-jak1* int-jungle-fishgame) (if (task-closed? (game-task jungle-fishgame) (task-status need-introduction)) 1 0))
 
+  ;;skip some cutscenes if condition is met.
+  (if (>= (-> *autosplit-info-jak1* num-power-cells) 20) (close-specific-task! (game-task firecanyon-assistant) (task-status need-reward-speech)))
+  (if (>= (-> *autosplit-info-jak1* num-power-cells) 72) (close-specific-task! (game-task lavatube-start) (task-status need-reward-speech)))
+   
+  (close-specific-task! (game-task intro) (task-status need-resolution))
+  (close-specific-task! (game-task beach-ecorocks) (task-status need-introduction))
   ;; end
   (none))
 
