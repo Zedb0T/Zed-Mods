@@ -17,6 +17,7 @@
  
 
   ;; loading/cutscene related flags
+  (set! (-> *autosplit-info-jak1* cutscene-skip?) #f)
   (set! (-> *autosplit-info-jak1* in-cutscene?) (-> *pc-settings* movie?))
 
   ;; need resolution flags

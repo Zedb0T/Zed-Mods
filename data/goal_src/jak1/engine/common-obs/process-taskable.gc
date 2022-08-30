@@ -441,7 +441,8 @@
            (the-as spool-anim arg1)
            arg0
            (-> self blend-on-exit)
-           (lambda ((arg0 process-taskable)) (= (get-response (-> arg0 query)) 'no))
+           (lambda ((arg0 process-taskable)) (= (get-response (-> arg0 query)) 'nodf))
+           ;;fix this to a toggle later
            )
          (ja-play-spooled-anim
            (the-as spool-anim arg1)

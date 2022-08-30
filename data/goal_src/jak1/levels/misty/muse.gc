@@ -372,7 +372,7 @@ nav-enemy-default-event-handler
         (-> self anim)
         (the-as art-joint-anim muse-idle-ja)
         (the-as art-joint-anim muse-idle-ja)
-        (the-as (function process-drawable symbol) false-func)
+        (the-as (
         )
       (remove-setting! 'music-volume)
       (remove-setting! 'sfx-volume)
