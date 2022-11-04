@@ -2,6 +2,8 @@
 ("BEA.DGO"
   ("mistycannon.o" "mistycannon")
   ("babak-with-cannon.o" "babak-with-cannon")
+      ("hopper.o" "hopper")
+  ("hopper-ag.go" "hopper")
   ("air-h.o" "air-h")
   ("air.o" "air")
   ("wobbler.o" "wobbler")
