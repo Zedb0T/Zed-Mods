@@ -1949,7 +1949,7 @@
  "collide/collide-cache.gc"
  "entity/relocate.gc"
  "debug/memory-usage.gc"
- "entity/entity.gc"
+
  "geometry/path.gc"
  "geometry/vol.gc"
  "nav/navigate.gc"
@@ -1961,6 +1961,7 @@
  "game/task/task-control.gc"
  "common-obs/process-taskable.gc"
  "camera/pov-camera.gc"
+  "entity/entity.gc"
  "game/powerups.gc"
  "common-obs/crates.gc"
  "ui/hud.gc"

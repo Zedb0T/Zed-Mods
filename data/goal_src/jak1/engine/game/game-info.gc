@@ -228,7 +228,7 @@
                             startingDebugContinuePoint
                             )
                           (*debug-segment*
-                            "village1-hut"
+                            "beach-start"
                             )
                           (else
                             "title-start"
