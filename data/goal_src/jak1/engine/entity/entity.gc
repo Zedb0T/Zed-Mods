@@ -20,6 +20,9 @@
 ;; entity basic methods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+
+
 (defmethod mem-usage drawable-actor ((obj drawable-actor) (arg0 memory-usage-block) (arg1 int))
   "Update memory use for a drawable-actor"
   (set! (-> arg0 length) (max 44 (-> arg0 length)))
@@ -1247,6 +1250,26 @@
   `(or ,@(apply (lambda (x) `(begin (define-extern ,x type) (type-type? (-> obj etype) ,x))) types))
   )
 
+
+ (define *type-list* (the-as (array string) (new
+                                             'static
+                                             'boxed-array
+                                             :type string :length 5 :allocated-length 5
+"money"
+"eco-blue"
+"eco-yellow"
+"eco-red"
+"crate"
+
+)
+)
+)
+
+(define type-name "test")
+(defun set-type-rand-name ()
+(set! type-name (-> *type-list* (rand-vu-int-range 0 4)))
+)
+
 (defmethod birth! entity-actor ((obj entity-actor))
   "Create a process for this entity and start it."
   
@@ -1264,7 +1287,36 @@
   
   ;;(birth-log "call to birth! on ~A~%" obj)
 
-  (let* ((entity-type (-> obj etype))
+
+#|
+  (case arg2
+      (('attack)
+       (case (-> arg3 param 1)
+         (('flop)
+          (TODO-RENAME-29 self (-> self event-going-down) (-> self notify-actor))
+          (sound-play "silo-button")
+          (go-virtual basebutton-going-down)
+          )
+         )
+       )
+      (('trigger)
+       (sound-play "silo-button")
+       (go-virtual basebutton-going-down)
+       )
+      (('move-to)
+       (move-to-vec-or-quat! self (the-as vector (-> arg3 param 0)) (the-as quaternion (-> arg3 param 1)))
+       )
+      )
+    )
+
+|#
+(set-type-rand-name)
+(case (-> obj etype)
+((money)
+  (if (string= type-name "eco-blue")
+  
+  (begin
+  (let* ((entity-type eco-blue)
          (info (entity-info-lookup entity-type))
          (entity-process (get-process *default-dead-pool* entity-type (if info
                                                                           (-> info heap-size)
@@ -1294,6 +1346,227 @@
         )
       )
     )
+  
+  
+  
+  ))
+
+    (if (string= type-name "eco-yellow")
+  
+  (begin
+  (let* ((entity-type eco-yellow)
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )
+        )
+      )
+    )
+  ))
+
+      (if (string= type-name "eco-red")
+  
+  (begin
+  (let* ((entity-type eco-red)
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )
+        )
+      )
+    )
+  ))
+
+      (if (string= type-name "eco-red")
+  
+  (begin
+  (let* ((entity-type eco-red)
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )
+        )
+      )
+    )
+  ))
+
+      (if (string= type-name "crate")
+  
+  (begin
+  (let* ((entity-type crate)
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )
+        )
+      )
+    )
+  ))
+
+      (if (string= type-name "money")
+  
+  (begin
+  (let* ((entity-type money)
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )
+        )
+      )
+    )
+  ))
+ 
+
+  
+  
+  
+
+)
+(else
+ (let* ((entity-type (-> obj etype))
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )
+        )
+      )
+    )
+)
+)
+
+
   obj
   )
 
