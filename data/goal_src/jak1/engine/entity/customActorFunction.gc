@@ -1,0 +1,82 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom Actor Swapping
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(define doChangeChance 0)
+
+#|This is a function that can swap Actors in specified levels at a specified random chance
+ StartingActor is the type we expect to swap
+ ChangeToActor is the type we want to swap it to
+ obj is the original entity-actor passed to the birth! entity-actor ((obj entity-actor))
+ LevelToSwap is where we check the current level, if a level does not have that type in it 
+ you must either move it into the dgo or it will crash We specifiy the level to avoid these crashes
+ changeToChange is a number from 0-100 that will determine how likely an actor is to "change" when it spawns
+
+ For Example placing (birth-actor-swap babak lurkerpuppy obj (the-as level 'beach) 50) into birth! entity-actor will result in 
+ 50% of the babaks being replace with lurkerpuppy in the level beach
+ |#
+
+(defun birth-actor-swap ((StartingActor type) (ChangeToActor type) (obj entity-actor) (LevelToSwap level) (chanceToChange int))
+(set! doChangeChance  (rand-vu-int-range 0 100))
+
+;;First we check to see if the obj is what we expect and also if we are in the level that has the data for that actor
+(if (and 
+    (= (-> obj etype) StartingActor)
+    (=  (-> (level-get-target-inside *level*) name) LevelToSwap ) 
+    (<= doChangeChance chanceToChange))
+
+  ;;This is the modified TRUE condition that runs when it is true
+  (begin
+    (let* ((entity-type ChangeToActor)
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )))))
+  ;;This is the FALSE condition that runs when we dont meet the conditions, this just runs the vanilla code and spawns in the entities default type
+  (begin
+    (let* ((entity-type (-> obj etype))
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          ))))
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              ))
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )))))))
