@@ -1493,7 +1493,20 @@
   )
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom Actor Swapping
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(define doChangeChance 0)
+
+#|This is a function that can swap Actors in specified levels at a specified random chance
+ StartingActor is the type we expect to swap
+ ChangeToActor is the type we want to swap it to
+ obj is the original entity-actor passed to the birth! entity-actor ((obj entity-actor))
+ LevelToSwap is where we check the current level, if a level does not have that type in it 
+ you must either move it into the dgo or it will crash We specifiy the level to avoid these crashes
+ changeToChange is a number from 0-100 that will determine how likely an actor is to "change" when it spawns
 
 
 (defenum nav-enemy-flags
@@ -1590,137 +1603,14 @@
   :flag-assert         #x9000000e8
   )
 
+ For Example placing (birth-actor-swap babak lurkerpuppy obj (the-as level 'beach) 50) into birth! entity-actor will result in 
+ 50% of the babaks being replace with lurkerpuppy in the level beach
+ |#
 
-(deftype nav-enemy (process-drawable)
-  ((collide-info        collide-shape-moving         :offset        112)
-   (enemy-info          fact-info-enemy              :offset        144)
-   (hit-from-dir        vector               :inline :offset-assert 176)
-   (event-param-point   vector               :inline :offset-assert 192)
-   (frustration-point   vector               :inline :offset-assert 208)
-   (jump-dest           vector               :inline :offset-assert 224)
-   (jump-trajectory     trajectory           :inline :offset-assert 240)
-   (jump-time           time-frame                   :offset-assert 280)
-   (nav-info            nav-enemy-info               :offset-assert 288)
-   (target-speed        float                        :offset-assert 292)
-   (momentum-speed      float                        :offset-assert 296)
-   (acceleration        float                        :offset-assert 300)
-   (rotate-speed        float                        :offset-assert 304)
-   (turn-time           time-frame                   :offset-assert 312)
-   (frustration-time    time-frame                   :offset-assert 320)
-   (speed-scale         float                        :offset-assert 328)
-   (neck                joint-mod                    :offset-assert 332)
-   (reaction-time       time-frame                   :offset-assert 336)
-   (notice-time         time-frame                   :offset-assert 344)
-   (state-timeout       time-frame                   :offset-assert 352)
-   (free-time           time-frame                   :offset-assert 360)
-   (touch-time          time-frame                   :offset-assert 368)
-   (nav-enemy-flags     nav-enemy-flags              :offset-assert 376)
-   (incomming-attack-id handle                       :offset-assert 384)
-   (jump-return-state   (state process)              :offset-assert 392)
-   (rand-gen            random-generator             :offset-assert 396)
-   )
-  :heap-base #x120
-  :method-count-assert 76
-  :size-assert         #x190
-  :flag-assert         #x4c01200190
-  (:methods
-    (nav-enemy-attack () _type_ :state 20)
-    (nav-enemy-chase () _type_ :state 21)
-    (nav-enemy-flee () _type_ :state 22)
-    (nav-enemy-die () _type_ :state 23)
-    (nav-enemy-fuel-cell () _type_ :state 24)
-    (nav-enemy-give-up () _type_ :state 25)
-    (nav-enemy-jump () _type_ :state 26)
-    (nav-enemy-jump-land () _type_ :state 27)
-    (nav-enemy-idle () _type_ :state 28)
-    (nav-enemy-notice () _type_ :state 29)
-    (nav-enemy-patrol () _type_ :state 30)
-    (nav-enemy-stare () _type_ :state 31)
-    (nav-enemy-stop-chase () _type_ :state 32)
-    (nav-enemy-victory () _type_ :state 33)
-    (dummy-34 (_type_) none 34)
-    (nav-enemy-wait-for-cue () _type_ :state 35)
-    (nav-enemy-jump-to-point () _type_ :state 36)
-    (TODO-RENAME-37 (_type_) none 37)
-    (TODO-RENAME-38 (_type_) none 38)
-    (common-post (_type_) none 39)
-    (dummy-40 (_type_) none 40)
-    (dummy-41 (_type_) none 41)
-    (TODO-RENAME-42 (_type_) int 42)
-    (dummy-43 (_type_ process event-message-block) object 43)
-    (dummy-44 (_type_ process event-message-block) object 44)
-    (TODO-RENAME-45 (_type_ nav-enemy-info) none 45)
-    (TODO-RENAME-46 (_type_ float) basic 46)
-    (initialize-collision (_type_) none 47)
-    (TODO-RENAME-48 (_type_) none 48)
-    (TODO-RENAME-49 (_type_ nav-enemy-info) float 49)
-    (TODO-RENAME-50 (_type_ vector) symbol 50)
-    (dummy-51 (_type_) none 51)
-    (dummy-52 (_type_ vector) symbol 52)
-    (dummy-53 (_type_) symbol 53)
-    (dummy-54 (_type_ vector) symbol 54)
-    (dummy-55 (_type_) symbol 55)
-    (set-jump-height-factor! (_type_ int) none 56)
-    (dummy-57 (_type_) none 57)
-    (dummy-58 (_type_) none 58)
-    (TODO-RENAME-59 (_type_) none 59)
-    (dummy-60 (_type_ symbol) symbol 60)
-    (snow-bunny-attack () _type_ :state 61)
-    (snow-bunny-chase-hop () _type_ :state 62)
-    (snow-bunny-defend () _type_ :state 63)
-    (dummy-64 () _type_ :state 64)
-    (snow-bunny-lunge () _type_ :state 65)
-    (snow-bunny-nav-resume () _type_ :state 66)
-    (snow-bunny-patrol-hop () _type_ :state 67)
-    (snow-bunny-patrol-idle () _type_ :state 68)
-    (dummy-69 () _type_ :state 69)
-    (snow-bunny-retreat-hop () _type_ :state 70)
-    (snow-bunny-tune-spheres () _type_ :state 71)
-    (nav-enemy-touch-handler (_type_ process event-message-block) object 72)
-    (nav-enemy-attack-handler (_type_ process event-message-block) object 73)
-    (nav-enemy-jump-blocked () _type_ :state 74)
-    (dummy-75 () _type_ :state 75)
-    )
-  )
+(defun birth-actor-swap ((StartingActor type) (ChangeToActor type) (obj entity-actor) (LevelToSwap level) (chanceToChange int))
+(set! doChangeChance  (rand-vu-int-range 0 100))
 
-(deftype junglefish (nav-enemy)
-  ()
-  :heap-base #x120
-  :method-count-assert 76
-  :size-assert         #x190
-  :flag-assert         #x4c01200190
-  )
-
-
-
-
-(deftype hopper (nav-enemy)
-  ((jump-length  float  :offset-assert 400)
-   (shadow-min-y float  :offset-assert 404)
-   )
-  :heap-base #x130
-  :method-count-assert 76
-  :size-assert         #x198
-  :flag-assert         #x4c01300198
-  )
-
-(deftype babak (nav-enemy)
-  ()
-  :heap-base #x120
-  :method-count-assert 76
-  :size-assert         #x190
-  :flag-assert         #x4c01200190
-  (:states
-    babak-run-to-cannon
-    )
-  )
-
-
-
-(defmethod birth! entity-actor ((obj entity-actor))
-  "Create a process for this entity and start it."
-  (format #t "~A" (-> obj etype) )
- 
+|#
 (set-type-rand-name)
 (case (-> obj etype)
 ((babak junglefish )
@@ -1728,7 +1618,7 @@
   (if (string= (symbol->string (-> (level-get-target-inside *level*) name)) "beach") 
   
   (begin
-  (let* ((entity-type hopper)
+    (let* ((entity-type ChangeToActor)
          (info (entity-info-lookup entity-type))
          (entity-process (get-process *default-dead-pool* entity-type (if info
                                                                           (-> info heap-size)
@@ -1754,24 +1644,15 @@
         (when (not (birth-viewer entity-process obj))
           (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
           (logior! (-> obj extra perm status) (entity-perm-status bit-0))
-          )
-        )
-      )
-    )
-  
-  
-  
-  )
-   (begin
-  (let* ((entity-type babak)
+          )))))
+  ;;This is the FALSE condition that runs when we dont meet the conditions, this just runs the vanilla code and spawns in the entities default type
+  (begin
+    (let* ((entity-type (-> obj etype))
          (info (entity-info-lookup entity-type))
          (entity-process (get-process *default-dead-pool* entity-type (if info
                                                                           (-> info heap-size)
                                                                           #x4000
-                                                                          )
-                                      )
-                         )
-         )
+                                                                          ))))
     (cond
       ((not entity-process)
        (birth-log "could not birth because there is no process.~%")
@@ -1781,24 +1662,120 @@
          (and entity-type
               (valid? entity-type type #f #f 0)
               (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
-              )
-         )
+              ))
        (init-entity entity-process obj)
        )
       (else
         (when (not (birth-viewer entity-process obj))
           (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
-          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0)))))))))
+
+
+
+
+(defmethod birth! entity-actor ((obj entity-actor))
+  "Create a process for this entity and start it."
+  (format #t "~A" (-> obj etype) )
+  ;; temp
+  ; (when (or (not (obj-etype? process))
+            ; ;; disallowed types
+            ; ;(obj-etype?)
+            ; (zero? (-> obj etype)))
+    ; (when (nonzero? (-> obj etype))
+        ; (birth-log "rejecting etype ~A birth~%" (-> obj etype))
+        ; )
+    ; (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+    ; (return obj)
+    ; )
+  
+  ;;(birth-log "call to birth! on ~A~%" obj)
+
+
+#|
+  (case arg2
+      (('attack)
+       (case (-> arg3 param 1)
+         (('flop)
+          (TODO-RENAME-29 self (-> self event-going-down) (-> self notify-actor))
+          (sound-play "silo-button")
+          (go-virtual basebutton-going-down)
           )
-        )
+         )
+       )
+      (('trigger)
+       (sound-play "silo-button")
+       (go-virtual basebutton-going-down)
+       )
+      (('move-to)
+       (move-to-vec-or-quat! self (the-as vector (-> arg3 param 0)) (the-as quaternion (-> arg3 param 1)))
+       )
       )
     )
-  
-  
-  
-  ))
+
+|#
+(set-type-rand-name)
+(case (-> obj etype)
+((babak junglefish )
+
+(birth-actor-swap babak lurkerpuppy obj (the-as level 'beach) 50)
 )
 ((money)
+
+  (if (string= type-name "eco-blue") 
+  (birth-actor-swap money eco-blue obj (the-as level 'game) 100)
+  )
+
+  (if (string= type-name "eco-yellow")
+  (birth-actor-swap money eco-yellow obj (the-as level 'game) 100)
+  )
+
+  (if (string= type-name "eco-red")
+  (birth-actor-swap money eco-red obj (the-as level 'game) 100)
+  )
+
+  #|(if (string= type-name "eco-green")
+  (birth-actor-swap money eco-green obj (the-as level 'game) 100)
+  )|#
+
+  (if (string= type-name "crate")
+  (birth-actor-swap money crate obj (the-as level 'game) 100)
+  )
+
+      (if (string= type-name "money")
+  
+  (begin
+  (let* ((entity-type money)
+         (info (entity-info-lookup entity-type))
+         (entity-process (get-process *default-dead-pool* entity-type (if info
+                                                                          (-> info heap-size)
+                                                                          #x4000
+                                                                          )
+                                      )
+                         )
+         )
+    (cond
+      ((not entity-process)
+       (birth-log "could not birth because there is no process.~%")
+       )
+      ((begin
+         (set! (-> entity-process type) entity-type)
+         (and entity-type
+              (valid? entity-type type #f #f 0)
+              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
+              )
+         )
+       (init-entity entity-process obj)
+       )
+      (else
+        (when (not (birth-viewer entity-process obj))
+          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
+          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+          )
+        )
+      )
+    )
+  ))
+
   (if (string= type-name "eco-blue")
   
   (begin
@@ -1835,181 +1812,6 @@
   
   
   
-  ))
-
-    (if (string= type-name "eco-yellow")
-  
-  (begin
-  (let* ((entity-type eco-yellow)
-         (info (entity-info-lookup entity-type))
-         (entity-process (get-process *default-dead-pool* entity-type (if info
-                                                                          (-> info heap-size)
-                                                                          #x4000
-                                                                          )
-                                      )
-                         )
-         )
-    (cond
-      ((not entity-process)
-       (birth-log "could not birth because there is no process.~%")
-       )
-      ((begin
-         (set! (-> entity-process type) entity-type)
-         (and entity-type
-              (valid? entity-type type #f #f 0)
-              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
-              )
-         )
-       (init-entity entity-process obj)
-       )
-      (else
-        (when (not (birth-viewer entity-process obj))
-          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
-          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
-          )
-        )
-      )
-    )
-  ))
-
-      (if (string= type-name "eco-red")
-  
-  (begin
-  (let* ((entity-type eco-red)
-         (info (entity-info-lookup entity-type))
-         (entity-process (get-process *default-dead-pool* entity-type (if info
-                                                                          (-> info heap-size)
-                                                                          #x4000
-                                                                          )
-                                      )
-                         )
-         )
-    (cond
-      ((not entity-process)
-       (birth-log "could not birth because there is no process.~%")
-       )
-      ((begin
-         (set! (-> entity-process type) entity-type)
-         (and entity-type
-              (valid? entity-type type #f #f 0)
-              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
-              )
-         )
-       (init-entity entity-process obj)
-       )
-      (else
-        (when (not (birth-viewer entity-process obj))
-          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
-          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
-          )
-        )
-      )
-    )
-  ))
-
-      (if (string= type-name "eco-red")
-  
-  (begin
-  (let* ((entity-type eco-red)
-         (info (entity-info-lookup entity-type))
-         (entity-process (get-process *default-dead-pool* entity-type (if info
-                                                                          (-> info heap-size)
-                                                                          #x4000
-                                                                          )
-                                      )
-                         )
-         )
-    (cond
-      ((not entity-process)
-       (birth-log "could not birth because there is no process.~%")
-       )
-      ((begin
-         (set! (-> entity-process type) entity-type)
-         (and entity-type
-              (valid? entity-type type #f #f 0)
-              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
-              )
-         )
-       (init-entity entity-process obj)
-       )
-      (else
-        (when (not (birth-viewer entity-process obj))
-          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
-          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
-          )
-        )
-      )
-    )
-  ))
-
-      (if (string= type-name "crate")
-  
-  (begin
-  (let* ((entity-type crate)
-         (info (entity-info-lookup entity-type))
-         (entity-process (get-process *default-dead-pool* entity-type (if info
-                                                                          (-> info heap-size)
-                                                                          #x4000
-                                                                          )
-                                      )
-                         )
-         )
-    (cond
-      ((not entity-process)
-       (birth-log "could not birth because there is no process.~%")
-       )
-      ((begin
-         (set! (-> entity-process type) entity-type)
-         (and entity-type
-              (valid? entity-type type #f #f 0)
-              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
-              )
-         )
-       (init-entity entity-process obj)
-       )
-      (else
-        (when (not (birth-viewer entity-process obj))
-          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
-          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
-          )
-        )
-      )
-    )
-  ))
-
-      (if (string= type-name "money")
-  
-  (begin
-  (let* ((entity-type money)
-         (info (entity-info-lookup entity-type))
-         (entity-process (get-process *default-dead-pool* entity-type (if info
-                                                                          (-> info heap-size)
-                                                                          #x4000
-                                                                          )
-                                      )
-                         )
-         )
-    (cond
-      ((not entity-process)
-       (birth-log "could not birth because there is no process.~%")
-       )
-      ((begin
-         (set! (-> entity-process type) entity-type)
-         (and entity-type
-              (valid? entity-type type #f #f 0)
-              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
-              )
-         )
-       (init-entity entity-process obj)
-       )
-      (else
-        (when (not (birth-viewer entity-process obj))
-          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
-          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
-          )
-        )
-      )
-    )
   ))
  
 
