@@ -1573,6 +1573,11 @@
                          )
                  )
           )
+          (if (< 8 (rand-vu-int-range 0 10)) (pc-cheat-toggle-and-tune (-> *pc-settings* cheats) mirror)
+          
+          
+          
+          )
       (when (and (logtest? (-> self skel status) (janim-status spool))
                  (and (>= (ja-aframe-num 0) f30-0) (-> self state-object))
                  )
