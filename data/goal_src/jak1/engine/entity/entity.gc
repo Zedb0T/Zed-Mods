@@ -30,7 +30,7 @@
 (define-extern quicksandlurker type)
 (define-extern teetertotter type)
 (define-extern aphid type)
-(define-extern assitant type)
+(define-extern assistant type)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; entity basic methods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
