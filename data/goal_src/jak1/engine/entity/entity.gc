@@ -16,6 +16,20 @@
 (define *vis-actors* #t)
 (define-extern enemyRandomChance float)
 
+(define-extern lurkercrab type)
+(define-extern lurkerpuppy type)
+(define-extern lurkersnake type)
+(define-extern babak type)
+(define-extern babak-with-cannon type)
+(define-extern junglefish type)
+(define-extern junglesnake type)
+(define-extern hopper type)
+(define-extern darkvine type)
+(define-extern bonelurker type)
+(define-extern ballonlurker type)
+(define-extern quicksandlurker type)
+(define-extern teetertotter type)
+(define-extern aphid type)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; entity basic methods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
