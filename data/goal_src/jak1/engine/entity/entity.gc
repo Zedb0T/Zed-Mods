@@ -1746,7 +1746,7 @@
 (if (banned-obj? obj)
 (begin
 (if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'beach) enemyRandomChance)
+(birth-actor-swap (-> obj etype) hopper obj (the-as level 'beach) enemyRandomChance)
   )
 (if (string= type-name "lurkerpuppy")
 (birth-actor-swap (-> obj etype) lurkerpuppy obj (the-as level 'beach) enemyRandomChance)

@@ -1,7 +1,11 @@
 
 ("BEA.DGO"
+
   ("mistycannon.o" "mistycannon")
   ("babak-with-cannon.o" "babak-with-cannon")
+  ("hopper.o" "hopper")
+  ("misty-teetertotter.o" "misty-teetertotter")
+  ("hopper-ag.go" "hopper")
   ("air-h.o" "air-h")
   ("air.o" "air")
   ("wobbler.o" "wobbler")
@@ -22,6 +26,7 @@
   ("tpage-214.go" "tpage-214")
   ("tpage-213.go" "tpage-213")
   ("tpage-215.go" "tpage-215")
+  
   ("babak-ag.go" "babak")
   ("barrel-ag.go" "barrel")
   ("beachcam-ag.go" "beachcam")
