@@ -1656,14 +1656,13 @@
 (define *snow-enemy-list* (the-as (array string) (new
                                              'static
                                              'boxed-array
-                                             :type string :length 7 :allocated-length 7
+                                             :type string :length 5 :allocated-length 5
 "babak"
 "yeti"
 "snow-bunny"
 "ram-boss"
 "ice-cube"
-"ram"
-"snowpusher"
+
 
 )))
 
@@ -2086,12 +2085,6 @@ ram-boss ice-cube spider-egg)
 
 (if  (string= type-name "ice-cube")
 (birth-actor-swap (-> obj etype) ice-cube obj (the-as level 'snow) enemyRandomChance))
-
-(if  (string= type-name "ram")
-(birth-actor-swap (-> obj etype) ram obj (the-as level 'snow) enemyRandomChance))
-
-(if  (string= type-name "snowpusher")
-(birth-actor-swap (-> obj etype) snowpusher obj (the-as level 'snow) enemyRandomChance))
 
 
 
