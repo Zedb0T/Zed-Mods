@@ -1683,6 +1683,21 @@
 (set! type-name (-> *spidercave-enemy-list* (rand-vu-int-range 0 (-> *spidercave-enemy-list* length) )))
 )
 
+(define *citadel-enemy-list* (the-as (array string) (new
+                                             'static
+                                             'boxed-array
+                                             :type string :length 2 :allocated-length 2
+"babak"
+;;"green-eco-lurker"
+"citb-bunny"
+
+
+)))
+
+(defun set-type-randa-name-citadel ()
+(set! type-name (-> *citadel-enemy-list* (rand-vu-int-range 0 (-> *citadel-enemy-list* length) )))
+)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1803,6 +1818,9 @@
 (define-extern snowpusher type)
 (define-extern mother-spider type)
 (define-extern spider-egg type)
+(define-extern green-eco-lurker type)
+(define-extern citb-bunny type)
+
 
 
 (defun banned-obj? ((obj entity-actor))
@@ -2065,6 +2083,30 @@ ram-boss ice-cube spider-egg)
 (birth-actor-swap (-> obj etype) ogreboss obj (the-as level 'ogre) enemyRandomChance)))
 (default-entity-spawn obj))
 )
+
+(('citadel 'finalboss)
+(set-type-randa-name-citadel)
+(if (banned-obj? obj)
+(begin
+
+(if  (string= type-name "babak")
+(birth-actor-swap (-> obj etype) babak obj (the-as level 'game) enemyRandomChance))
+
+(if  (string= type-name "green-eco-lurker")
+(birth-actor-swap (-> obj etype) green-eco-lurker obj (the-as level 'game) enemyRandomChance))
+
+(if  (string= type-name "citb-bunny")
+(birth-actor-swap (-> obj etype) citb-bunny obj (the-as level 'game) enemyRandomChance))
+
+
+
+
+
+)
+(default-entity-spawn obj))
+)
+
+
 
 (('snow)
 (set-type-randa-name-snow)
