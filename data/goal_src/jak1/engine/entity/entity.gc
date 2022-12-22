@@ -1995,7 +1995,7 @@ ram-boss ice-cube spider-egg)
 (default-entity-spawn obj))
 )
 
-(('sunken)
+(('sunken 'sunkenb)
 (set-type-randa-name-sunken)
 (if (banned-obj? obj)
 (begin
