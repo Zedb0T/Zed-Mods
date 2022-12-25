@@ -140,7 +140,7 @@
               (go-virtual active)
               )
           (if (and *cheat-mode* (cpad-pressed? 0 l3))
-              (set! (-> self max-slot) 4)
+              (set! (-> self max-slot) (- (-> *warp-info* length)1))
               )
           (let ((gp-0
                   (new 'stack 'font-context *font-default-matrix* 32 160 0.0 (font-color default) (font-flags shadow kerning))
@@ -195,6 +195,29 @@
     v0-0
     )
   )
+(defun string-upcase ((arg0 string) (arg1 string))
+  "Uppercase the given string."
+  (let* ((a0-1 (-> arg0 data))
+         (a3-0 (-> a0-1 0))
+         (a2-0 1)
+         (v1-0 0)
+         )
+    (while (nonzero? a3-0)
+      (if (and (>= a3-0 (the-as uint 97)) (>= (the-as uint 122) a3-0))
+          (+! a3-0 -32)
+          )
+      (set! (-> arg1 data v1-0) a3-0)
+      (set! a3-0 (-> a0-1 a2-0))
+      (+! a2-0 1)
+      (+! v1-0 1)
+      )
+    (set! (-> arg1 data v1-0) (the-as uint 0))
+    )
+  0
+  (none)
+  )
+(define WarpLevelString "dsads")
+
 
 (defun print-level-name ((arg0 int) (arg1 font-context) (arg2 int) (arg3 int))
   (let ((s5-0 (if arg3
@@ -205,18 +228,36 @@
         )
     (+! (-> arg1 origin x) (the float s5-0))
     (let ((f30-0 (- 1.0 (* 0.0033333334 (the float arg2)))))
-      (print-game-text-scaled
-        (lookup-text! *common-text* (the-as game-text-id (+ arg0 286)) #f)
+    ;;if not <4
+    (if (< arg0 5) 
+    (begin
+         (print-game-text-scaled
+       
+         (lookup-text! *common-text* (the-as game-text-id (+ arg0 286)) #f)
         f30-0
         arg1
         (the int (* 128.0 f30-0))
         )
-      )
+    )
+
+
+    ;;if <4
+    (begin
+         (string-upcase  (symbol->string (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) (the-as string WarpLevelString))
+       (print-game-text-scaled
+        WarpLevelString
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))
+        )
+    ))
+
     (set! (-> arg1 origin x) (- (-> arg1 origin x) (the float s5-0)))
     )
   (set! (-> arg1 color) (font-color default))
   arg1
   )
+)
 
 (defstate active (warp-gate)
   :virtual #t

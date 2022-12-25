@@ -445,12 +445,14 @@
   (none)
   )
 
-(define *warp-info* (the-as (array string) (new 'static 'boxed-array :type string
+(define *warp-info* (the-as (array string) (new 'static 'boxed-array :type string :length 7
                                              "training-warp"
                                              "village1-warp"
                                              "village2-warp"
                                              "village3-warp"
                                              "citadel-warp"
+                                             "beach-start"
+                                             "sunken-start"
                                              )
                                            )
         )
@@ -522,7 +524,7 @@
         )
       )
     (set-blackout-frames (seconds 0.05))
-    (start 'play (get-continue-by-name *game-info* (-> *warp-info* arg0)))
+    (start 'play (get-continue-by-name *game-info* (-> *warp-info* (+ 0 arg0))))
     (logior! (-> self mask) (process-mask sleep))
     (suspend)
     0
