@@ -195,29 +195,28 @@
     v0-0
     )
   )
-(defun string-upcase ((arg0 string) (arg1 string))
-  "Uppercase the given string."
-  (let* ((a0-1 (-> arg0 data))
-         (a3-0 (-> a0-1 0))
-         (a2-0 1)
-         (v1-0 0)
-         )
-    (while (nonzero? a3-0)
-      (if (and (>= a3-0 (the-as uint 97)) (>= (the-as uint 122) a3-0))
-          (+! a3-0 -32)
-          )
-      (set! (-> arg1 data v1-0) a3-0)
-      (set! a3-0 (-> a0-1 a2-0))
-      (+! a2-0 1)
-      (+! v1-0 1)
-      )
-    (set! (-> arg1 data v1-0) (the-as uint 0))
-    )
-  0
-  (none)
-  )
-(define WarpLevelString "dsads")
 
+(define WarpLevelString "Placeholder for upcase method")
+
+;;Return #t if the first entries in *warp-info* are in the expected state
+(defun vanilla-warp-info? ()
+(if (not (string= (-> *warp-info* 0) "training-warp"))
+(return #f)
+)
+(if (not (string= (-> *warp-info* 1) "village1-warp"))
+(return #f)
+)
+(if (not (string= (-> *warp-info* 2) "village2-warp"))
+(return #f)
+)
+(if (not (string= (-> *warp-info* 3) "village3-warp"))
+(return #f)
+)
+(if (not (string= (-> *warp-info* 4) "citadel-warp"))
+(return #f)
+)
+
+#t)
 
 (defun print-level-name ((arg0 int) (arg1 font-context) (arg2 int) (arg3 int))
   (let ((s5-0 (if arg3
@@ -228,8 +227,8 @@
         )
     (+! (-> arg1 origin x) (the float s5-0))
     (let ((f30-0 (- 1.0 (* 0.0033333334 (the float arg2)))))
-    ;;if not <4 (Default levels do this!)
-    (if (< arg0 5) 
+    ;;if not <4  and in the vanilla level order (Default levels do this!)
+    (if (and (vanilla-warp-info?) (< arg0 5) )
     (begin
         (print-game-text-scaled
         (lookup-text! *common-text* (the-as game-text-id (+ arg0 286)) #f)
@@ -260,9 +259,30 @@
         (the int (* 128.0 f30-0))))))
         )
 
-
-
-
+        (if (not (vanilla-warp-info?))
+    
+    ;;if <4 and the first entries are not in the default expeceted order (Its a custom level! sick lets see if it has a customname)
+    (begin
+    (if  (!= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    ;;It has a custom name cool! lets use that as the text in the warp menu!
+    (begin
+        (string-upcase  (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) (the-as string WarpLevelString))
+        (print-game-text-scaled
+        WarpLevelString
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))))
+        )
+    ;;It doesnt have a custom name :( lets default to the level code name VILLAGE1 ETC)
+    (if  (= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    (begin
+        (string-upcase  (symbol->string (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) name)) (the-as string WarpLevelString))
+        (print-game-text-scaled
+        WarpLevelString
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))))))
+        )
     (set! (-> arg1 origin x) (- (-> arg1 origin x) (the float s5-0)))
     )
   (set! (-> arg1 color) (font-color default))
