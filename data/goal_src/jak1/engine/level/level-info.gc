@@ -642,6 +642,7 @@
   (new 'static 'level-load-info
     :index 9
     :name 'sunken
+    :customname "My new level!"
     :visname 'sunken-vis
     :nickname 'sun
     :packages '(sunken)

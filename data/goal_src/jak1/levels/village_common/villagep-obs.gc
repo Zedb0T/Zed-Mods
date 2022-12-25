@@ -228,29 +228,40 @@
         )
     (+! (-> arg1 origin x) (the float s5-0))
     (let ((f30-0 (- 1.0 (* 0.0033333334 (the float arg2)))))
-    ;;if not <4
+    ;;if not <4 (Default levels do this!)
     (if (< arg0 5) 
     (begin
-         (print-game-text-scaled
-       
-         (lookup-text! *common-text* (the-as game-text-id (+ arg0 286)) #f)
+        (print-game-text-scaled
+        (lookup-text! *common-text* (the-as game-text-id (+ arg0 286)) #f)
         f30-0
         arg1
-        (the int (* 128.0 f30-0))
-        )
-    )
-
-
-    ;;if <4
+        (the int (* 128.0 f30-0)))
+        )    
+    ;;if <4 (Its a custom level! sick lets see if it has a customname)
     (begin
-         (string-upcase  (symbol->string (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) (the-as string WarpLevelString))
-       (print-game-text-scaled
+    (if  (!= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    ;;It has a custom name cool! lets use that as the text in the warp menu!
+    (begin
+        (string-upcase  (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) (the-as string WarpLevelString))
+        (print-game-text-scaled
         WarpLevelString
         f30-0
         arg1
-        (the int (* 128.0 f30-0))
+        (the int (* 128.0 f30-0))))
         )
-    ))
+    ;;It doesnt have a custom name :( lets default to the level code name VILLAGE1 ETC)
+    (if  (= (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) customname) 0)
+    (begin
+        (string-upcase  (symbol->string (-> (lookup-level-info (-> (get-continue-by-name *game-info* (-> *warp-info* (- arg0 0))) level)) name)) (the-as string WarpLevelString))
+        (print-game-text-scaled
+        WarpLevelString
+        f30-0
+        arg1
+        (the int (* 128.0 f30-0))))))
+        )
+
+
+
 
     (set! (-> arg1 origin x) (- (-> arg1 origin x) (the float s5-0)))
     )
