@@ -14,8 +14,22 @@
 (define *spawn-actors* #t)
 (define *compact-actors* #t)
 (define *vis-actors* #t)
-(define-extern enemyRandomChance float)
 
+(define-extern lurkercrab type)
+(define-extern lurkerpuppy type)
+(define-extern lurkersnake type)
+(define-extern babak type)
+(define-extern babak-with-cannon type)
+(define-extern junglefish type)
+(define-extern junglesnake type)
+(define-extern hopper type)
+(define-extern darkvine type)
+(define-extern bonelurker type)
+(define-extern ballonlurker type)
+(define-extern quicksandlurker type)
+(define-extern teetertotter type)
+(define-extern aphid type)
+(define-extern assistant type)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; entity basic methods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1491,213 +1505,6 @@
     babak-run-to-cannon
     )
   )
-(define-extern money type)
-(define-extern crate type)
-(define-extern springbox type)
-(define-extern fuel-cell type)
-
-
-
-(define *beach-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 4 :allocated-length 4
-"babak"
-"lurkerpuppy"
-"lurkercrab"
-"lurkersnake"
-
-)))
-
-(defun set-type-randa-name-beach ()
-(set! type-name (-> *beach-enemy-list* (rand-vu-int-range 0 (-> *beach-enemy-list* length) )))
-)
-
-
-(define *jungle-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-"junglefish"
-"junglesnake"
-"hopper"
-"darkvine"
-
-)))
-
-(defun set-type-randa-name-jungle ()
-(set! type-name (-> *jungle-enemy-list* (rand-vu-int-range 0 (-> *jungle-enemy-list* length) )))
-)
-
-(define *misty-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-"bonelurker"
-"ballonlurker"
-"quicksandlurker"
-"teetertotter"
-
-)))
-
-(defun set-type-randa-name-misty ()
-(set! type-name (-> *misty-enemy-list* (rand-vu-int-range 0 (-> *misty-enemy-list* length) )))
-)
-
-
-(define *firecanyon-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-
-
-)))
-
-(defun set-type-randa-name-firecanyon ()
-(set! type-name (-> *firecanyon-enemy-list* (rand-vu-int-range 0 (-> *firecanyon-enemy-list* length) )))
-)
-
-(define *training-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-
-
-)))
-
-(defun set-type-randa-name-training ()
-(set! type-name (-> *training-enemy-list* (rand-vu-int-range 0 (-> *training-enemy-list* length) )))
-)
-
-(define *village2-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-
-
-)))
-
-(defun set-type-randa-name-village2 ()
-(set! type-name (-> *village2-enemy-list* (rand-vu-int-range 0 (-> *village2-enemy-list* length) )))
-)
-
-(define *rolling-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-
-
-
-)))
-
-(defun set-type-randa-name-rolling ()
-(set! type-name (-> *rolling-enemy-list* (rand-vu-int-range 0 (-> *rolling-enemy-list* length) )))
-)
-
-(define *sunken-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-"double-lurker"
-"puffer"
-"bully"
-"qbert-plat"
-
-
-
-
-)))
-
-(defun set-type-randa-name-sunken ()
-(set! type-name (-> *sunken-enemy-list* (rand-vu-int-range 0 (-> *sunken-enemy-list* length) )))
-)
-(define *swamp-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 8 :allocated-length 8
-"babak"
-"swamp-rat"
-"swamp-rat-nest"
-"swamp-bat"
-"kermit"
-"swamp-spike"
-"billy"
-"billy-snack"
-
-
-
-)))
-
-(defun set-type-randa-name-swamp ()
-(set! type-name (-> *swamp-enemy-list* (rand-vu-int-range 0 (-> *swamp-enemy-list* length))))
-)
-
-
-(define *ogre-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-
-
-)))
-
-(defun set-type-randa-name-ogre ()
-(set! type-name (-> *ogre-enemy-list* (rand-vu-int-range 0 (-> *ogre-enemy-list* length) )))
-)
-
-(define *snow-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-"yeti"
-"snow-bunny"
-"ram-boss"
-"ice-cube"
-
-
-)))
-
-(defun set-type-randa-name-snow ()
-(set! type-name (-> *snow-enemy-list* (rand-vu-int-range 0 (-> *snow-enemy-list* length) )))
-)
-
-(define *spidercave-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 5 :allocated-length 5
-"babak"
-
-
-)))
-
-(defun set-type-randa-name-spidercave ()
-(set! type-name (-> *spidercave-enemy-list* (rand-vu-int-range 0 (-> *spidercave-enemy-list* length) )))
-)
-
-(define *citadel-enemy-list* (the-as (array string) (new
-                                             'static
-                                             'boxed-array
-                                             :type string :length 2 :allocated-length 2
-"babak"
-;;"green-eco-lurker"
-"citb-bunny"
-
-
-)))
-
-(defun set-type-randa-name-citadel ()
-(set! type-name (-> *citadel-enemy-list* (rand-vu-int-range 0 (-> *citadel-enemy-list* length) )))
-)
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1719,7 +1526,7 @@
  50% of the babaks being replace with lurkerpuppy in the level beach
  |#
 
-(defun birth-actor-swap ((StartingActor type) (ChangeToActor type) (obj entity-actor) (LevelToSwap level) (chanceToChange float))
+(defun birth-actor-swap ((StartingActor type) (ChangeToActor type) (obj entity-actor) (LevelToSwap level) (chanceToChange int))
 (set! doChangeChance  (rand-vu-int-range 0 100))
 
 ;;First we check to see if the obj is what we expect and also if we are in the level that has the data for that actor
@@ -1784,366 +1591,89 @@
 
 
 
-(define-extern lurkercrab type)
-(define-extern lurkerpuppy type)
-(define-extern lurkersnake type)
-(define-extern babak type)
-(define-extern babak-with-cannon type)
-(define-extern junglefish type)
-(define-extern junglesnake type)
-(define-extern hopper type)
-(define-extern darkvine type)
-(define-extern bonelurker type)
-(define-extern ballonlurker type)
-(define-extern quicksandlurker type)
-(define-extern teetertotter type)
-(define-extern aphid type)
-(define-extern double-lurker type)
-(define-extern puffer type)
-(define-extern bully type)
-(define-extern qbert-plat type)
-(define-extern swamp-rat type)
-(define-extern swamp-rat-nest type)
-(define-extern swamp-bat type)
-(define-extern kermit type)
-(define-extern swamp-spike type)
-(define-extern billy type)
-(define-extern billy-snack type)
-(define-extern ogreboss type)
-(define-extern yeti type)
-(define-extern snow-bunny type)
-(define-extern ram-boss type)
-(define-extern ice-cube type)
-(define-extern ram type)
-(define-extern snowpusher type)
-(define-extern mother-spider type)
-(define-extern spider-egg type)
-(define-extern green-eco-lurker type)
-(define-extern citb-bunny type)
-
-
-
-(defun banned-obj? ((obj entity-actor))
-(case (-> obj etype) 
-((babak lurkercrab lurkerpuppy babak-with-cannon  junglefish  hopper aphid bonelurker puffer double-lurker swamp-rat kermit yeti snow-bunny
-ram-boss ice-cube spider-egg)
-#|"babak"
-"yeti"
-"snow-bunny"
-"ram-boss"
-"ice-cube"
-"ram"|#
-#t
-)
-
-
-(else
-#f
-)
-)
-)
-
-(defun default-entity-spawn ((obj entity-actor))
- (let* ((entity-type (-> obj etype))
-         (info (entity-info-lookup entity-type))
-         (entity-process (get-process *default-dead-pool* entity-type (if info
-                                                                          (-> info heap-size)
-                                                                          #x4000
-                                                                          )
-                                      )
-                         )
-         )
-    (cond
-      ((not entity-process)
-       (birth-log "could not birth because there is no process.~%")
-       )
-      ((begin
-         (set! (-> entity-process type) entity-type)
-         (and entity-type
-              (valid? entity-type type #f #f 0)
-              (valid? (method-of-object entity-process init-from-entity!) function #f #f 0)
-              )
-         )
-       (init-entity entity-process obj)
-       )
-      (else
-        (when (not (birth-viewer entity-process obj))
-          (format 0 "ERROR: no proper process type named ~A exists in the code, could not start ~A~%" entity-type obj)
-          (logior! (-> obj extra perm status) (entity-perm-status bit-0))
-          )
-        )
-      )
-    )
-
-
-)
-
 
 (defmethod birth! entity-actor ((obj entity-actor))
   "Create a process for this entity and start it."
   (format #t "~A" (-> obj etype) )
- 
+  ;; temp
+  ; (when (or (not (obj-etype? process))
+            ; ;; disallowed types
+            ; ;(obj-etype?)
+            ; (zero? (-> obj etype)))
+    ; (when (nonzero? (-> obj etype))
+        ; (birth-log "rejecting etype ~A birth~%" (-> obj etype))
+        ; )
+    ; (logior! (-> obj extra perm status) (entity-perm-status bit-0))
+    ; (return obj)
+    ; )
+  
+  ;;(birth-log "call to birth! on ~A~%" obj)
+
+
+#|
+  (case arg2
+      (('attack)
+       (case (-> arg3 param 1)
+         (('flop)
+          (TODO-RENAME-29 self (-> self event-going-down) (-> self notify-actor))
+          (sound-play "silo-button")
+          (go-virtual basebutton-going-down)
+          )
+         )
+       )
+      (('trigger)
+       (sound-play "silo-button")
+       (go-virtual basebutton-going-down)
+       )
+      (('move-to)
+       (move-to-vec-or-quat! self (the-as vector (-> arg3 param 0)) (the-as quaternion (-> arg3 param 1)))
+       )
+      )
+    )
+
+|#
 (set-type-rand-name)
-(case (-> (level-get-target-inside *level*) name)
-(('training)
-(set-type-randa-name-training)
-(if (banned-obj? obj)
-(begin
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'misty) enemyRandomChance)))
-(default-entity-spawn obj))
-)
-(('beach)
-(set-type-randa-name-beach)
+(case (-> obj etype)
+((babak junglefish )
 
-(if (banned-obj? obj)
-(begin
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) hopper obj (the-as level 'beach) enemyRandomChance)
-  )
-(if (string= type-name "lurkerpuppy")
-(birth-actor-swap (-> obj etype) lurkerpuppy obj (the-as level 'beach) enemyRandomChance)
-  )
-(if (string= type-name "lurkercrab")
-(birth-actor-swap (-> obj etype) lurkercrab obj (the-as level 'beach) enemyRandomChance)
+(birth-actor-swap babak lurkerpuppy obj (the-as level 'beach) 50)
+)
+((money)
+
+  (if (string= type-name "eco-blue") 
+  (birth-actor-swap money eco-blue obj (the-as level 'game) 100)
   )
 
-)
-(default-entity-spawn obj))
-)
-(('jungle)
-(set-type-randa-name-jungle)
+  (if (string= type-name "eco-yellow")
+  (birth-actor-swap money eco-yellow obj (the-as level 'game) 100)
+  )
 
-(if (banned-obj? obj)
-(begin
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'jungle) enemyRandomChance)
-)
+  (if (string= type-name "eco-red")
+  (birth-actor-swap money eco-red obj (the-as level 'game) 100)
+  )
 
-(if (string= type-name "hopper")
-(birth-actor-swap (-> obj etype) hopper obj (the-as level 'jungle) enemyRandomChance)
-)
+  #|(if (string= type-name "eco-green")
+  (birth-actor-swap money eco-green obj (the-as level 'game) 100)
+  )|#
 
-(if (string= type-name "junglesnake")
-(birth-actor-swap (-> obj etype) junglesnake obj (the-as level 'jungle) enemyRandomChance)
-)
-(if (string= type-name "darkvine")
-(birth-actor-swap (-> obj etype) darkvine obj (the-as level 'jungle) enemyRandomChance)
-)
+  (if (string= type-name "crate")
+  (birth-actor-swap money crate obj (the-as level 'game) 100)
+  )
 
-)
-(default-entity-spawn obj))
-)
-(('jungleb)
-(set-type-randa-name-jungle)
+  (if (string= type-name "money")
+  (birth-actor-swap money money obj (the-as level 'game) 100)
+  )
 
-(if (banned-obj? obj)
-(begin
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'jungleb) enemyRandomChance)
-)
+  (if (string= type-name "assistant")
+  (birth-actor-swap money assistant obj (the-as level 'game) 100)
+  )
+ 
 
-(if (string= type-name "hopper")
-(birth-actor-swap (-> obj etype) hopper obj (the-as level 'jungleb) enemyRandomChance)
-)
-
-(if (string= type-name "junglesnake")
-(birth-actor-swap (-> obj etype) junglesnake obj (the-as level 'jungleb) enemyRandomChance)
-)
-(if (string= type-name "darkvine")
-(birth-actor-swap (-> obj etype) darkvine obj (the-as level 'jungleb) enemyRandomChance)
-)
+  
+  
+  
 
 )
-(default-entity-spawn obj))
-)
-
-(('misty)
-(set-type-randa-name-misty)
-
-(if (banned-obj? obj)
-(begin
-
-
-
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'misty) enemyRandomChance)
-)
-(if (string= type-name "bonelurker")
-(birth-actor-swap (-> obj etype) bonelurker obj (the-as level 'misty) enemyRandomChance)
-)
-(if (string= type-name "quicksandlurker")
-(birth-actor-swap (-> obj etype) quicksandlurker obj (the-as level 'misty) enemyRandomChance)
-)
-
-(if (string= type-name "teetertotter")
-(birth-actor-swap (-> obj etype)  teetertotter obj (the-as level 'misty) enemyRandomChance)
-)
-
-
-
-)
-(default-entity-spawn obj))
-)
-(('firecanyon)
-(set-type-randa-name-firecanyon)
-
-(if (banned-obj? obj)
-(begin
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'misty) enemyRandomChance)
-)
-)
-(default-entity-spawn obj))
-)
-(('village2)
-(set-type-randa-name-village2)
-(if (banned-obj? obj)
-(begin
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'misty) enemyRandomChance)))
-(default-entity-spawn obj))
-)
-(('rolling)
-(set-type-randa-name-rolling)
-(if (banned-obj? obj)
-(begin
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'misty) enemyRandomChance)))
-(default-entity-spawn obj))
-)
-
-(('sunken 'sunkenb)
-(set-type-randa-name-sunken)
-(if (banned-obj? obj)
-(begin
-
-
-
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'sunken) enemyRandomChance))
-
-(if (string= type-name "double-lurker")
-(birth-actor-swap (-> obj etype) double-lurker obj (the-as level 'sunken) enemyRandomChance))
-
-(if (string= type-name "puffer")
-(birth-actor-swap (-> obj etype) puffer obj (the-as level 'sunken) enemyRandomChance))
-
-(if (string= type-name "bully")
-(birth-actor-swap (-> obj etype) bully obj (the-as level 'sunken) enemyRandomChance))
-
-(if (string= type-name "qbert-plat")
-(birth-actor-swap (-> obj etype) qbert-plat obj (the-as level 'sunken) enemyRandomChance))
-)
-(default-entity-spawn obj))
-)
-
-
-(('swamp)
-(set-type-randa-name-swamp)
-(if (banned-obj? obj)
-(begin
-
-
-
-(if (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'swamp) enemyRandomChance))
-
-(if (string= type-name "swamp-rat")
-(birth-actor-swap (-> obj etype) swamp-rat obj (the-as level 'swamp) enemyRandomChance))
-
-
-(if (string= type-name "kermit")
-(birth-actor-swap (-> obj etype) kermit obj (the-as level 'swamp) enemyRandomChance))
-
-(if (string= type-name "swamp-spike")
-(birth-actor-swap (-> obj etype) swamp-spike obj (the-as level 'swamp) enemyRandomChance))
-
-
-(if (string= type-name "swamp-bat")
-(birth-actor-swap (-> obj etype) swamp-bat obj (the-as level 'swamp) enemyRandomChance))
-
-(if (string= type-name "swamp-rat-nest")
-(birth-actor-swap (-> obj etype) swamp-rat-nest obj (the-as level 'swamp) enemyRandomChance))
-
-(if (string= type-name "billy")
-(birth-actor-swap (-> obj etype) billy obj (the-as level 'swamp) enemyRandomChance))
-
-(if (string= type-name "billy-snack")
-(birth-actor-swap (-> obj etype) billy-snack obj (the-as level 'swamp) enemyRandomChance))
-)
-
-(default-entity-spawn obj))
-)
-(('ogre)
-(set-type-randa-name-ogre)
-(if (banned-obj? obj)
-(begin
-(if  (string= type-name "billy-snack")
-(birth-actor-swap (-> obj etype) ogreboss obj (the-as level 'ogre) enemyRandomChance)))
-(default-entity-spawn obj))
-)
-
-(('citadel 'finalboss)
-(set-type-randa-name-citadel)
-(if (banned-obj? obj)
-(begin
-
-(if  (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'game) enemyRandomChance))
-
-(if  (string= type-name "green-eco-lurker")
-(birth-actor-swap (-> obj etype) green-eco-lurker obj (the-as level 'game) enemyRandomChance))
-
-(if  (string= type-name "citb-bunny")
-(birth-actor-swap (-> obj etype) citb-bunny obj (the-as level 'game) enemyRandomChance))
-
-
-
-
-
-)
-(default-entity-spawn obj))
-)
-
-
-
-(('snow)
-(set-type-randa-name-snow)
-(if (banned-obj? obj)
-(begin
-
-(if  (string= type-name "babak")
-(birth-actor-swap (-> obj etype) babak obj (the-as level 'snow) enemyRandomChance))
-
-(if  (string= type-name "yeti")
-(birth-actor-swap (-> obj etype) yeti obj (the-as level 'snow) enemyRandomChance))
-
-(if  (string= type-name "snow-bunny")
-(birth-actor-swap (-> obj etype) snow-bunny obj (the-as level 'snow) enemyRandomChance))
-
-(if  (string= type-name "ram-boss")
-(birth-actor-swap (-> obj etype) ram-boss obj (the-as level 'snow) enemyRandomChance))
-
-(if  (string= type-name "ice-cube")
-(birth-actor-swap (-> obj etype) ice-cube obj (the-as level 'snow) enemyRandomChance))
-
-
-
-)
-(default-entity-spawn obj))
-)
-
-(('darkcave 'robocave 'maincave)
-(set-type-randa-name-spidercave)
-(if (banned-obj? obj)
-(begin
-(none)
-)
-(default-entity-spawn obj))
-)
-
-
 (else
  (let* ((entity-type (-> obj etype))
          (info (entity-info-lookup entity-type))
