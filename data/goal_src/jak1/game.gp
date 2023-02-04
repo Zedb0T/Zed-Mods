@@ -380,7 +380,7 @@
 ;; Text
 ;;;;;;;;;;;;;;;;;;;;;
 
-(defstep :in "game/assets/game_text.gp"
+(defstep :in "game/assets/jak1/game_text.gp"
   :tool 'text
   :out '("$OUT/iso/0COMMON.TXT"
          "$OUT/iso/1COMMON.TXT"
@@ -391,7 +391,7 @@
          "$OUT/iso/6COMMON.TXT")
   )
 
-(defstep :in "game/assets/game_subtitle.gp"
+(defstep :in "game/assets/jak1/game_subtitle.gp"
   :tool 'subtitle
   :out '("$OUT/iso/0SUBTIT.TXT"
          "$OUT/iso/3SUBTIT.TXT"
@@ -1722,12 +1722,15 @@
 
 (goal-src "pc/util/knuth-rand.gc" "settings-h")
 
+(goal-src "pc/features/speedruns-h.gc")
+
 (goal-src-sequence
  ;; prefix
  "engine/"
 
  :deps
- ("$OUT/obj/settings-h.o")
+ ("$OUT/obj/settings-h.o"
+  "$OUT/obj/speedruns-h.o")
 
  "util/capture.gc"
  "debug/memory-usage-h.gc"
@@ -2040,7 +2043,6 @@
 ;; Custom or Modified Code
 (goal-src "pc/features/autosplit-h.gc")
 (goal-src "pc/features/autosplit.gc" "autosplit-h" "task-control-h")
-(goal-src "pc/features/speedruns-h.gc")
 (goal-src "pc/features/speedruns.gc" "speedruns-h" "autosplit-h")
 (goal-src "pc/pckernel-h.gc" "dma-buffer")
 (goal-src "pc/util/pc-anim-util.gc" "target-h")
@@ -2049,6 +2051,15 @@
 (goal-src "pc/progress-pc.gc" "progress" "pckernel")
 (goal-src "pc/util/anim-tester-x.gc" "pckernel" "gstring" "joint" "process-drawable" "art-h" "effect-control")
 (goal-src "pc/hud-classes-pc.gc" "pckernel" "hud" "battlecontroller" "generic-obs")
+
+(goal-src-sequence
+ ;; prefix
+ "engine/"
+ :deps ("$OUT/obj/battlecontroller.o" "$OUT/obj/snow-bunny.o" "$OUT/obj/baby-spider.o" "$OUT/obj/sage-village3.o" "$OUT/obj/sage-finalboss.o" "$OUT/obj/assistant-citadel.o" "$OUT/obj/assistant-lavatube.o" "$OUT/obj/robocave-part.o" "$OUT/obj/driller-lurker.o" "$OUT/obj/training-part.o" "$OUT/obj/rolling-race-ring.o" "$OUT/obj/beach-part.o" "$OUT/obj/sculptor.o" "$OUT/obj/sunken-fish.o" "$OUT/obj/billy.o" "$OUT/obj/sidekick-human.o" "$OUT/obj/flying-lurker.o" "$OUT/obj/target-racer-h.o" "$OUT/obj/firecanyon-obs.o" "$OUT/obj/target-flut.o" "$OUT/obj/hud-classes-pc.o" "$OUT/obj/collide-reaction-racer.o" "$OUT/obj/plant-boss.o" "$OUT/obj/beach-obs.o" "$OUT/obj/sunken-elevator.o" "$OUT/obj/jungle-part.o" "$OUT/obj/sequence-a-village1.o" "$OUT/obj/ticky.o")
+ "mods/mods-settings.gc"
+ "mods/define-custom-functions-here.gc"
+ "mods/put-custom-code-here.gc"
+)
 
 ;; the debug menu is modified to include PC specific options:
 (goal-src "engine/debug/default-menu.gc" "anim-tester-x" "part-tester")

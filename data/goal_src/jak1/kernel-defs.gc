@@ -376,6 +376,8 @@
 
 (define-extern pc-prof (function string pc-prof-event none))
 
+(defconstant *user* (get-user))
+
 ;; Constants generated within the C++ runtime
 (define-extern *pc-user-dir-base-path* string)
 (define-extern *pc-settings-folder* string)
@@ -389,3 +391,4 @@
 ;; These were made by us.
 
 (define-extern vm-ptr (function int pointer))
+(define-extern pc-filter-debug-string? (function string float symbol))
